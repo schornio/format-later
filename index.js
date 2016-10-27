@@ -1,30 +1,29 @@
 'use strict';
 
-const capitalizeFirstLetter = (string) => string.charAt(0).toUpperCase() + string.slice(1);
-
-const arraysHasSameElements = (array1, array2) => {
-  let set1 = new Set(array1);
-  let set2 = new Set(array2);
-
-  if (Array.from(set1).length !== Array.from(set2).length) {
-    return false;
-  }
-
-  for (let value1 of set1) {
-    if (!set2.has(value1)) {
-      return false;
-    }
-  }
-
-  return true;
+var capitalizeFirstLetter = function (string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
-const formatList = (list, formater) => {
+var laterArrayChecksum = function (laterArray) {
+  var checkSum = 0;
+
+  for (var i = 0; i < laterArray.length; i++) {
+    checkSum += Math.pow(2, laterArray[i] - 1);
+  }
+
+  return checkSum;
+};
+
+var isWeekdayArray = function (weekdayArray) {
+  return laterArrayChecksum(weekdayArray) === 62;
+};
+
+var formatList = function (list, formater) {
   if (list.length === 1) {
     return formater(list[0]);
   }
 
-  let listString = '';
+  var listString = '';
 
   for (var i = 0; i < list.length; i++) {
     listString += formater(list[i]);
@@ -41,21 +40,21 @@ const formatList = (list, formater) => {
   return listString;
 };
 
-const formatTime = (definition) => {
+var formatTime = function (definition) {
   if (definition.h.length === 24) {
     return 'stündlich';
   }
 
-  let scheduleString = formatList(definition.h, (value) => `${value}:00`);
-  return `um ${scheduleString} Uhr`;
+  var scheduleString = formatList(definition.h, function (value) { return value + ':00'; });
+  return 'um ' + scheduleString +' Uhr';
 };
 
-const formatDayOfWeek = (definition) => {
-  if (arraysHasSameElements(definition.d, [ 2, 3, 4, 5, 6])) {
+var formatDayOfWeek = function (definition) {
+  if (isWeekdayArray(definition.d)) {
     return 'Werktags ';
   }
 
-  return formatList(definition.d, (dayOfWeek) => {
+  return formatList(definition.d, function (dayOfWeek) {
     switch (dayOfWeek) {
       case 1:
         return 'Sonntags';
@@ -75,12 +74,12 @@ const formatDayOfWeek = (definition) => {
   }) + ' ';
 };
 
-const formatDayOfMonth = (definition) => {
-  return 'am ' + formatList(definition.D, (value) => `${value}.`) + ' Tag des Monats ';
+var formatDayOfMonth = function (definition) {
+  return 'am ' + formatList(definition.D, function (value) { return value + '.'; }) + ' Tag des Monats ';
 };
 
-const formatDefiniton = (definition) => {
-  let scheduleString = '';
+var formatDefiniton = function (definition) {
+  var scheduleString = '';
 
   if (definition.d || definition.D) {
     if (definition.d) {
@@ -102,11 +101,11 @@ const formatDefiniton = (definition) => {
   return scheduleString;
 };
 
-const formatSchedule = (definitions) => {
-  let scheduleString = '';
+var formatSchedule = function (definitions) {
+  var scheduleString = '';
 
-  for (let definition of definitions.schedules) {
-    scheduleString += formatDefiniton(definition);
+  for (var i = 0; i < definitions.schedules.length; i++) {
+    scheduleString += formatDefiniton(definitions.schedules[i]);
   }
 
   return capitalizeFirstLetter(scheduleString);

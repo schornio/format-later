@@ -1,4 +1,5 @@
 'use strict';
+/*jslint esversion: 6 */
 
 const { expect } = require('chai');
 const later = require('later');
