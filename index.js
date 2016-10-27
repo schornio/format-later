@@ -2,6 +2,23 @@
 
 const capitalizeFirstLetter = (string) => string.charAt(0).toUpperCase() + string.slice(1);
 
+const arraysHasSameElements = (array1, array2) => {
+  let set1 = new Set(array1);
+  let set2 = new Set(array2);
+
+  if (Array.from(set1).length !== Array.from(set2).length) {
+    return false;
+  }
+
+  for (let value1 of set1) {
+    if (!set2.has(value1)) {
+      return false;
+    }
+  }
+
+  return true;
+};
+
 const formatList = (list, formater) => {
   if (list.length === 1) {
     return formater(list[0]);
@@ -30,26 +47,30 @@ const formatTime = (definition) => {
   }
 
   let scheduleString = formatList(definition.h, (value) => `${value}:00`);
-  return `um ${scheduleString}`;
+  return `um ${scheduleString} Uhr`;
 };
 
 const formatDayOfWeek = (definition) => {
+  if (arraysHasSameElements(definition.d, [ 2, 3, 4, 5, 6])) {
+    return 'Werktags ';
+  }
+
   return formatList(definition.d, (dayOfWeek) => {
     switch (dayOfWeek) {
       case 1:
-        return 'Sonntag';
+        return 'Sonntags';
       case 2:
-        return 'Montag';
+        return 'Montags';
       case 3:
-        return 'Dienstag';
+        return 'Dienstags';
       case 4:
-        return 'Mittwoch';
+        return 'Mittwochs';
       case 5:
-        return 'Donnerstag';
+        return 'Donnerstags';
       case 6:
-        return 'Freitag';
+        return 'Freitags';
       case 7:
-        return 'Samstag';
+        return 'Samstags';
     }
   }) + ' ';
 };

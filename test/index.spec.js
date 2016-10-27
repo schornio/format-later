@@ -16,42 +16,52 @@ describe('format-schedule', () => {
     {
       it: 'should format daily schedule',
       input: later.parse.recur().on(7).hour(),
-      expect: 'Täglich um 7:00'
+      expect: 'Täglich um 7:00 Uhr'
     },
     {
       it: 'should format complex daily schedule',
       input: later.parse.recur().on([ 7, 14, 20 ]).hour(),
-      expect: 'Täglich um 7:00, 14:00 und 20:00'
+      expect: 'Täglich um 7:00, 14:00 und 20:00 Uhr'
     },
     {
       it: 'should format weekly schedule',
       input: later.parse.recur().on(2).dayOfWeek().on(7).hour(),
-      expect: 'Montag um 7:00'
+      expect: 'Montags um 7:00 Uhr'
     },
     {
       it: 'should format complex weekly schedule',
       input: later.parse.recur().on([ 2, 4, 6 ]).dayOfWeek().on(7).hour(),
-      expect: 'Montag, Mittwoch und Freitag um 7:00'
+      expect: 'Montags, Mittwochs und Freitags um 7:00 Uhr'
     },
     {
       it: 'should format complex weekly schedule - pt 2',
       input: later.parse.recur().on([ 3, 5, 7, 1 ]).dayOfWeek().on(7).hour(),
-      expect: 'Dienstag, Donnerstag, Samstag und Sonntag um 7:00'
+      expect: 'Dienstags, Donnerstags, Samstags und Sonntags um 7:00 Uhr'
     },
     {
       it: 'should format complex weekly schedule - pt 3',
       input: later.parse.recur().on([ 3, 5, 7, 1 ]).dayOfWeek().on([ 7, 19 ]).hour(),
-      expect: 'Dienstag, Donnerstag, Samstag und Sonntag um 7:00 und 19:00'
+      expect: 'Dienstags, Donnerstags, Samstags und Sonntags um 7:00 und 19:00 Uhr'
+    },
+    {
+      it: 'should format weekday schedule',
+      input: later.parse.recur().onWeekday().on([ 8 ]).hour(),
+      expect: 'Werktags um 8:00 Uhr'
+    },
+    {
+      it: 'should format weekday schedule - pt 2',
+      input: later.parse.recur().on([ 4, 5, 6, 7, 1 ]).dayOfWeek().on([ 8 ]).hour(),
+      expect: 'Mittwochs, Donnerstags, Freitags, Samstags und Sonntags um 8:00 Uhr'
     },
     {
       it: 'should format monthly schedule',
       input: later.parse.recur().on(1).dayOfMonth().on(8).hour(),
-      expect: 'Am 1. Tag des Monats um 8:00'
+      expect: 'Am 1. Tag des Monats um 8:00 Uhr'
     },
     {
       it: 'should format complex monthly schedule',
       input: later.parse.recur().on([ 1, 2, 3 ]).dayOfMonth().on(8).hour(),
-      expect: 'Am 1., 2. und 3. Tag des Monats um 8:00'
+      expect: 'Am 1., 2. und 3. Tag des Monats um 8:00 Uhr'
     }
   ];
 
