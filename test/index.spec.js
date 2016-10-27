@@ -15,6 +15,11 @@ describe('format-schedule', () => {
         expect: 'Täglich stündlich'
     },
     {
+        it: 'should format every 2 hour schedule',
+        input: later.parse.recur().every(2).hour(),
+        expect: 'Täglich alle 2 Stunden'
+    },
+    {
       it: 'should format daily schedule',
       input: later.parse.recur().on(7).hour(),
       expect: 'Täglich um 7:00 Uhr'
@@ -53,6 +58,11 @@ describe('format-schedule', () => {
       it: 'should format weekday schedule - pt 2',
       input: later.parse.recur().on([ 4, 5, 6, 7, 1 ]).dayOfWeek().on([ 8 ]).hour(),
       expect: 'Mittwochs, Donnerstags, Freitags, Samstags und Sonntags um 8:00 Uhr'
+    },
+    {
+      it: 'should format every 2 weeks schedule',
+      input: later.parse.recur().every(2).weekOfYear().on(12).hour(),
+      expect: 'Alle 2 Wochen um 12:00 Uhr'
     },
     {
       it: 'should format monthly schedule',

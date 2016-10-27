@@ -1,5 +1,12 @@
 'use strict';
 
+var CHECKSUM_WEEKDAY = 124;
+
+var CHECKSUM_HOURLY = 16777215;
+var CHECKSUM_EVERY_2_HOURS = 5592405;
+
+var CHECKSUM_EVERY_2_WEEKS = 12009599006321322;
+
 var capitalizeFirstLetter = function (string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
@@ -8,14 +15,14 @@ var laterArrayChecksum = function (laterArray) {
   var checkSum = 0;
 
   for (var i = 0; i < laterArray.length; i++) {
-    checkSum += Math.pow(2, laterArray[i] - 1);
+    checkSum += Math.pow(2, laterArray[i]);
   }
 
   return checkSum;
 };
 
 var isWeekdayArray = function (weekdayArray) {
-  return laterArrayChecksum(weekdayArray) === 62;
+  return laterArrayChecksum(weekdayArray) === CHECKSUM_WEEKDAY;
 };
 
 var formatList = function (list, formater) {
@@ -41,8 +48,14 @@ var formatList = function (list, formater) {
 };
 
 var formatTime = function (definition) {
-  if (definition.h.length === 24) {
+  var timeChecksum = laterArrayChecksum(definition.h);
+
+  if (timeChecksum === CHECKSUM_HOURLY) {
     return 'stündlich';
+  }
+
+  if (timeChecksum === CHECKSUM_EVERY_2_HOURS) {
+    return 'alle 2 Stunden';
   }
 
   var scheduleString = formatList(definition.h, function (value) { return value + ':00'; });
@@ -81,13 +94,17 @@ var formatDayOfMonth = function (definition) {
 var formatDefiniton = function (definition) {
   var scheduleString = '';
 
-  if (definition.d || definition.D) {
+  if (definition.d || definition.D || definition.wy) {
     if (definition.d) {
       scheduleString += formatDayOfWeek(definition);
     }
 
     if (definition.D) {
       scheduleString += formatDayOfMonth(definition);
+    }
+
+    if (definition.wy && laterArrayChecksum(definition.wy) === CHECKSUM_EVERY_2_WEEKS) {
+      scheduleString += 'Alle 2 Wochen ';
     }
 
   } else {
